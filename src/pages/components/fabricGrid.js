@@ -58,9 +58,9 @@ function FabricGridList(props) {
               subtitle={<span>{tile.fabrics_number}</span>}
               actionIcon={
                 <Radio
-                  checked={selectedFabric === tile.fabrics_number}
+                  checked={selectedFabric === tile.name.trim()+'-'+tile.fabrics_number}
                   onChange={handleChange(tile.src)}
-                  value={tile.fabrics_number}
+                  value={tile.name.trim()+'-'+tile.fabrics_number}
                   color="primary"
                   name="radio-button-demo"
                   icon={<CheckBoxOutlineBlank  />}

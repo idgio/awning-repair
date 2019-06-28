@@ -13,6 +13,8 @@ class DropzoneAreaExample extends Component{
       <DropzoneArea 
           onChange={handleChangeFiles}
           acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+          filesLimit={8}
+          maxFileSize={700000}
       />
     )  
   }

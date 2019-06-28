@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
 import Send from '@material-ui/icons/Send';
+import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
@@ -13,6 +14,11 @@ import Input from '@material-ui/core/Input';
 import FormLabel from '@material-ui/core/FormLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import {Link} from 'react-router-dom'
 const styles = theme => ({
   root: {
@@ -31,6 +37,10 @@ const styles = theme => ({
   fiftyFormControl: {
     width: '50%',
   },
+   fiftyFormControl2: {
+    width: '50%',
+    paddingTop: 16,
+  },
   thirtyFormControl: {
       width: '33%',
   },
@@ -38,9 +48,18 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     },
+  phoneLabel:{
+    paddingTop: 22,
+    paddingLeft: 11,
+  },
   button: {
       marginTop: 20,
       
+  },
+  card: {
+    paddingLeft: '1%',
+    paddingRight: '1%',
+    paddingTop: 15,
   }
 });
 
@@ -50,7 +69,9 @@ function TextMaskCustom(props) {
   return (
     <MaskedInput
       {...other}
-      ref={inputRef}
+      ref={ref => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
       mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
       placeholderChar={'\u2000'}
       showMask
@@ -62,7 +83,7 @@ TextMaskCustom.propTypes = {
 };
 
 function CreateRequestLayout(props) {
-  const { classes, DetailsCreateRequestLayout, handleClickSave } = props;
+  const { classes, DetailsCreateRequestLayout, handleAwningDelete, awnings } = props;
   return (
     <div className={classes.root}>
         <Grid container   justify="center">
@@ -102,14 +123,13 @@ function CreateRequestLayout(props) {
                       margin="normal"
                     />
                 </FormControl> 
-                <FormControl className={classes.fiftyFormControl}>
-                    <InputLabel htmlFor="formatted-text-mask-input">Phone</InputLabel>
+                <FormControl className={classes.fiftyFormControl2}>
+                    <InputLabel className={classes.phoneLabel} htmlFor="formatted-text-mask-input">Phone</InputLabel>
                     <Input
                         value={props.phone}
                         onChange={props.handleChange('phone')}
                         id="formatted-text-mask-input"
                         inputComponent={TextMaskCustom}
-                        id="phone"
                         className={classes.textField}
                     />
                 </FormControl>
@@ -155,17 +175,49 @@ function CreateRequestLayout(props) {
                 </FormControl>
                 
                 <Grid container   justify="flex-start">
+                   
+                        {awnings.length > 0 ?  
+                    
+                      awnings.map((awning, index) => (
+                      <Grid item sm={6} md={4} className={classes.card} key={awning["9"]}>
+                          <Card  >
+                            
+                              <CardMedia
+                                component="img"
+                                alt={awning["8"]}
+                                height="80"
+                                image={awning["9"]}
+                                title={awning["8"]}
+                              />
+                              <CardContent>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                  Width: {awning["0"]}" | Drop: {awning["1"]}" | Valance: {awning["2"]}" | Projection: {awning["3"]}" ...
+                                </Typography>
+                               
+                              </CardContent>
+                               <CardActions>
+                                  <Button size="small" color="primary" onClick={() =>handleAwningDelete(index)}>
+                                    Delete
+                                  </Button>
+                                </CardActions>
+                          </Card>
+                      </Grid>
+                        ))
+                    
+                     : ''}
+                    
                     <Grid item sm={6} md={4}>
-                        <DetailsCreateRequestLayout handleClickSave={handleClickSave} />
+                        <DetailsCreateRequestLayout handleAwningArray={props.handleAwningArray} handleFilesArray={props.handleFilesArray} />
                     </Grid>
                     
                 </Grid>
                 <FormControl fullWidth>
-                    <Button variant="contained" color="secondary" size="large" className={classes.button}>
+                    <Button variant="contained" color="secondary" size="large" className={classes.button} onClick={props.handleClickSave}>
                         Send
                         <Send className={classes.rightIcon} />
                     </Button>
                 </FormControl>
+                <LinearProgress variant="determinate" value={props.completed} />
             </Paper>
             
           </Grid>

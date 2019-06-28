@@ -40,7 +40,27 @@ class DetailsCreateRequest extends Component {
     this.setState({ open: false });
   };
   handleSaveandClose = () => {
-    this.setState({ open: false });
+    let awningArray = [this.state.width, this.state.drop, this.state.valance, this.state.projection, this.state.quantity, this.state.lacebar, this.state.framing, this.state.files, this.state.selectedFabric, this.state.selectedFabricSrc, Date.now()];
+    
+    this.props.handleAwningArray(awningArray);
+    this.props.handleFilesArray(this.state.files);
+    this.setState({ 
+      open: false,
+      openInner: false,
+      files: [],
+      imageTitle: "",
+      imageSrc: "",
+      selectedFabric: "",
+      selectedFabricSrc: "",
+      width: "",
+      drop: "",
+      valance: "",
+      projection: "",
+      quantity: "",
+      lacebar: "",
+      framing: 10, 
+    });
+    
   };
   handleChange = name => event => {
       this.setState({
@@ -59,7 +79,6 @@ class DetailsCreateRequest extends Component {
     this.setState({
       files: filesR,
     });
-    console.log(filesR)
   };
    
     render(){
