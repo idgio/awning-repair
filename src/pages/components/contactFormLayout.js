@@ -11,6 +11,12 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Send from '@material-ui/icons/Send';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 const styles = theme => ({
   root: {
@@ -85,7 +91,7 @@ function contactFormLayout(props) {
                         />
                     </FormControl>
                     <FormControl fullWidth>
-                        <Button variant="contained" color="secondary" size="large" className={classes.button}>
+                        <Button variant="contained" color="secondary" size="large" className={classes.button} disabled={props.loading} onClick={props.handleClickSave}>
                             Send
                             <Send className={classes.rightIcon} />
                         </Button>
@@ -94,6 +100,15 @@ function contactFormLayout(props) {
             </Paper>
           </Grid>
         </Grid>
+        <Snackbar
+          open={props.openAfterDone}
+          TransitionComponent={Transition}
+          onClose={props.handleCloseAfterDone}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Thanks for your comments</span>}
+        />
     </div>
         
     

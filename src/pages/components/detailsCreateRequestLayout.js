@@ -48,12 +48,18 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     },
   fiftyFormControl: {
-    width: '50%',
+    width: '100%',
     marginTop: 16,
+    [theme.breakpoints.up('md')]: {
+           width: '50%',
+    },
   },
   thirtyFormControl: {
-    width: '33%',
+    width: '100%',
     marginTop: 16,
+    [theme.breakpoints.up('md')]: {
+           width: '33%',
+    },
   },
   appBar: {
     position: 'relative',
@@ -90,7 +96,7 @@ const lacebarImg = {
 }
 
 function DetailsCreateRequestLayout(props) {
-  const { classes, onOpen, onClose, open, handleClickOpenInner, imageSrc, imageTitle, handleCloseInner, openInner, handleSaveandClose } = props;
+  const { classes, onOpen, onClose, open, handleClickOpenInner, imageSrc, imageTitle, handleCloseInner, openInner, handleSaveandClose, cols } = props;
   
   return (
     <div >
@@ -248,13 +254,13 @@ function DetailsCreateRequestLayout(props) {
                         
                       />
                     </FormControl>
-                    <ScrollableFabric selectedFabric={props.selectedFabric}  handleChange={props.handleChangeFabric}/>
+                    <ScrollableFabric selectedFabric={props.selectedFabric}  handleChange={props.handleChangeFabric} cols={cols}/>
                      <Typography variant="subheading" gutterBottom>
                       Please make sure to include the following pictures: Front shot, side view and underneath, view of how the fabric is attached to the top of the frame of your existing awning
                     </Typography>
                     <DropZone handleChangeFiles={props.handleChangeFiles}/>
                     <FormControl fullWidth>
-                        <Button onClick={handleSaveandClose} variant="contained" color="secondary" size="large" className={classes.button}>
+                        <Button onClick={handleSaveandClose} variant="contained" color="secondary" size="large" className={classes.button} disabled={props.disable}>
                             <Save  />
                             Save
                         </Button>

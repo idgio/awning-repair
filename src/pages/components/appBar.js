@@ -24,11 +24,18 @@ const styles = theme => ({
   noTextDeco: {
     textDecoration: 'none',
     color: theme.palette.primary.contrastText,
+    fontSize: '12px',
+    [theme.breakpoints.up('md')]: {
+           fontSize: '0.875rem',
+    },
   },
    img: {
         margin: '0 auto',
         marginBottom: 10,
-        maxWidth: 202,
+        maxWidth: 150,
+        [theme.breakpoints.up('md')]: {
+           maxWidth: 202,
+        },
         height: 'auto',
         position: 'relative',
         marginTop: 10,
@@ -58,11 +65,14 @@ function ButtonAppBar(props) {
                             </Link>
                           </Typography>
                             <div>
-                              <Button component='a'	 href="https://dev.thecanvasmart.com/" className={classes.noTextDeco}>
+                              <Button component='a'	 href="https://thecanvasmart.com/" className={classes.noTextDeco}>
                                 Home
                               </Button>
                               <Button component={Link} to="/awning-recover/contact" className={classes.noTextDeco}>
                                 Contact
+                              </Button>
+                              <Button component={Link} to="/awning-recover/cart" className={classes.noTextDeco}>
+                                Cart {props.items.length !== 0 ? ('('+props.items.length+')'):(null)}
                               </Button>
                             </div>
                         </Toolbar>

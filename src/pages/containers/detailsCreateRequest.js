@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import DetailsCreateRequestLayout from '../components/detailsCreateRequestLayout'
-
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 class DetailsCreateRequest extends Component {
     state = {
@@ -15,9 +15,11 @@ class DetailsCreateRequest extends Component {
     drop: "",
     valance: "",
     projection: "",
+    selectedValanceType: 0,
     quantity: "",
     lacebar: "",
-    framing: 10,
+    disable: false,
+    framing: 10
       };
   //----------------------------------------
   handleClickOpenInner = (image,e) => {
@@ -40,6 +42,7 @@ class DetailsCreateRequest extends Component {
     this.setState({ open: false });
   };
   handleSaveandClose = () => {
+    this.setState({ disable: true });
     let awningArray = [this.state.width, this.state.drop, this.state.valance, this.state.projection, this.state.quantity, this.state.lacebar, this.state.framing, this.state.files, this.state.selectedFabric, this.state.selectedFabricSrc, Date.now()];
     
     this.props.handleAwningArray(awningArray);
@@ -58,6 +61,7 @@ class DetailsCreateRequest extends Component {
       projection: "",
       quantity: "",
       lacebar: "",
+      disable: false,
       framing: 10, 
     });
     
@@ -82,9 +86,10 @@ class DetailsCreateRequest extends Component {
   };
    
     render(){
+        
         return(
-            <DetailsCreateRequestLayout {...this.state} onClose={this.handleClose} onOpen={this.handleClickOpen} handleChange={this.handleChange} handleClickOpenInner={this.handleClickOpenInner} handleCloseInner={this.handleCloseInner} handleChangeFabric={this.handleChangeFabric} handleSaveandClose={this.handleSaveandClose} handleChangeFiles={this.handleChangeFiles} />
+            <DetailsCreateRequestLayout {...this.state} onClose={this.handleClose} onOpen={this.handleClickOpen} handleChange={this.handleChange} handleClickOpenInner={this.handleClickOpenInner} handleCloseInner={this.handleCloseInner} handleChangeFabric={this.handleChangeFabric} handleSaveandClose={this.handleSaveandClose} handleChangeFiles={this.handleChangeFiles} cols={this.props.width} />
         )
     }
 }
-export default DetailsCreateRequest
+export default withWidth()(DetailsCreateRequest)

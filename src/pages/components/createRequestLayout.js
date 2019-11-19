@@ -3,23 +3,25 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import AddIcon from '@material-ui/icons/Add';
 import Send from '@material-ui/icons/Send';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask'
-import Input from '@material-ui/core/Input';
 import FormLabel from '@material-ui/core/FormLabel';
-import InputLabel from '@material-ui/core/InputLabel';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {Link} from 'react-router-dom'
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -78,6 +80,7 @@ function TextMaskCustom(props) {
     />
   );
 }
+
 TextMaskCustom.propTypes = {
   inputRef: PropTypes.func.isRequired,
 };
@@ -123,15 +126,19 @@ function CreateRequestLayout(props) {
                       margin="normal"
                     />
                 </FormControl> 
-                <FormControl className={classes.fiftyFormControl2}>
-                    <InputLabel className={classes.phoneLabel} htmlFor="formatted-text-mask-input">Phone</InputLabel>
-                    <Input
-                        value={props.phone}
-                        onChange={props.handleChange('phone')}
-                        id="formatted-text-mask-input"
-                        inputComponent={TextMaskCustom}
-                        className={classes.textField}
+                <FormControl className={classes.fiftyFormControl}>
+                    <TextField
+                      id="maskExample"
+                      label="Phone"
+                      className={classes.textField}
+                      margin="normal"
+                      InputProps={{
+                        inputComponent: TextMaskCustom,
+                        value: props.phone,
+                        onChange: props.handleChange('phone'),
+                      }}
                     />
+                    
                 </FormControl>
                 <FormControl fullWidth>
                     <TextField
@@ -206,13 +213,13 @@ function CreateRequestLayout(props) {
                     
                      : ''}
                     
-                    <Grid item sm={6} md={4}>
+                    <Grid item xs={12} sm={6} md={4}>
                         <DetailsCreateRequestLayout handleAwningArray={props.handleAwningArray} handleFilesArray={props.handleFilesArray} />
                     </Grid>
                     
                 </Grid>
                 <FormControl fullWidth>
-                    <Button variant="contained" color="secondary" size="large" className={classes.button} onClick={props.handleClickSave}>
+                    <Button variant="contained" color="secondary" size="large" className={classes.button} onClick={props.handleClickSave} disabled={props.loading}>
                         Send
                         <Send className={classes.rightIcon} />
                     </Button>
@@ -222,6 +229,16 @@ function CreateRequestLayout(props) {
             
           </Grid>
         </Grid>
+         
+        <Snackbar
+          open={props.openAfterDone}
+          TransitionComponent={Transition}
+          onClose={props.handleCloseAfterDone}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">We recieved your request, one of our coworkers will contact you soon</span>}
+        />
     </div>
         
     

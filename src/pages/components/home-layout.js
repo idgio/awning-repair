@@ -5,18 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import PriorityHigh from '@material-ui/icons/PriorityHigh';
-import DoneOutline from '@material-ui/icons/Done';
 import NavigateNext from '@material-ui/icons/NavigateNext';
 import Button from '@material-ui/core/Button';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import IconButton from '@material-ui/core/IconButton';
-import InsertPhoto from '@material-ui/icons/InsertPhoto';
 import {   Link  } from 'react-router-dom'
+import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
+import MaskedInput from 'react-text-mask'
+import {   Redirect } from 'react-router-dom'
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -35,7 +30,10 @@ const styles = theme => ({
   button:{
     textAlign: 'center',
     margin: '20px auto 5px',
-    width: '33%',
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+       width: '33%',
+    },
     display: 'flex',
   },
   rightIcon: {
@@ -50,6 +48,14 @@ const styles = theme => ({
   whiteColor: {
     color: 'white',
   },
+  fiftyFormControl: {
+    width: '50%',
+  },
+   textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+
+    },
   link:{
     color: theme.palette.secondary.dark
   }
@@ -62,11 +68,34 @@ const img2 = {
   src:  'http://via.placeholder.com/350x150',
   title: 'Standard awing frame'
 }
+
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={ref => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+      placeholderChar={'\u2000'}
+      showMask
+    />
+  );
+}
+
+TextMaskCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+};
+
 function HomeLayout(props){
-    const { classes,open, onClose, onClick, imageSrc, imageTitle} = props;
+    const { classes,open, onClose, onClick, imageSrc, imageTitle, contactName} = props;
+
     
   return (
     <div className={classes.root}>
+      {props.toNewAwning && <Redirect to='/awning-recover/new-request' />}
       <Grid container justify="center">
         <Grid item  sm={12} md={8}>
           <Paper className={classes.paper}>
@@ -76,55 +105,58 @@ function HomeLayout(props){
         <Grid container   justify="center">
           <Grid item sm={12} md={8}>
             <Paper className={classes.paperNo}>
-              <Typography variant="subheading" gutterBottom>If your existing awning has the following characteristics, with just a few measurements we can produce a beautiful cover for your existing awning. In order for us to be able to replace your awning fabric your existing awning must meet the following criteria:
-              </Typography>
-              <List>
-                <ListItem>
-                  <Avatar>
-                    <PriorityHigh />
-                  </Avatar>
-                  <ListItemText primary="They must not be staple type awning.  Usually you can see a plastic strip overtop of where the staples are and you will not see any rope of screws holding the fabric to the frame. " />
-                </ListItem>
-                <ListItem>
-                  <Avatar>
-                    <PriorityHigh />
-                  </Avatar>
-                  <ListItemText primary="The must not be a screw pipe style awning" />
-                  <ListItemSecondaryAction>
-                      <IconButton aria-label="Details"  onClick={onClick.bind(this,img1)}>
-                        <InsertPhoto />
-                      </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <Avatar>
-                    <DoneOutline />
-                  </Avatar>
-                  <ListItemText primary="They must be what we call a standard awing frame" />
-                  <ListItemSecondaryAction>
-                      <IconButton aria-label="Details" onClick={onClick.bind(this,img2)}>
-                        <InsertPhoto />
-                      </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem>
-                  <Avatar>
-                    <PriorityHigh />
-                  </Avatar>
-                  <ListItemText primary="They must be attached using screws or rope laced on from the bottom (If you look under your awing and you see rope being used to attach the awning to the frame your good to go.  If you need assistance with this please contact us at 813-992-5143 and we will walk you through the process)" />
-                </ListItem>
-              </List>
-              <Typography variant="body1" gutterBottom>
-                For other styles and shapes that utilize rope to attach the fabric to the frame call us at <a className={classes.link} href="tel:+813-992-5143">813-992-5143</a> to talk through options.
-              </Typography>
-              <Button  component={Link} to="/awning-recover/new-request" variant="contained" size="large" color="secondary" className={classes.button}>
+             <FormControl className={classes.fiftyFormControl}>
+                    <TextField
+                      id="contactName"
+                      label="Name"
+                      className={classes.textField}
+                      value={contactName}
+                      onChange={props.handleChangeText('contactName')}
+                      margin="normal"
+                    />
+                </FormControl>
+                <FormControl className={classes.fiftyFormControl}>
+                    <TextField
+                      id="company"
+                      label="Company"
+                      className={classes.textField}
+                      value={props.contactCompany}
+                      onChange={props.handleChangeText('contactCompany')}
+                      margin="normal"
+                    />
+                </FormControl> 
+                <FormControl className={classes.fiftyFormControl}>
+                    <TextField
+                      id="email"
+                      label="Email"
+                      className={classes.textField}
+                      value={props.contactEmail}
+                      type="email"
+                      onChange={props.handleChangeText('contactEmail')}
+                      margin="normal"
+                    />
+                </FormControl> 
+                <FormControl className={classes.fiftyFormControl}>
+                    <TextField
+                      id="maskExample"
+                      label="Phone"
+                      className={classes.textField}
+                      margin="normal"
+                      InputProps={{
+                        inputComponent: TextMaskCustom,
+                        value: props.contactPhone,
+                        onChange: props.handleChangeText('contactPhone'),
+                      }}
+                    />
+                    
+                </FormControl>
+                <Button  onClick={props.handleStartClick} variant="contained" size="large" color="secondary" className={classes.button}>
                 Get started
                 <NavigateNext className={classes.rightIcon}/>
               </Button>
             </Paper>  
           </Grid>
         </Grid>
-        <ImageModal open={open}  onClose={onClose} imageSrc={imageSrc} imageTitle={imageTitle}/>
       </Grid>
     </div>
   );

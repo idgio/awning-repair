@@ -45,17 +45,20 @@ const styles = theme => ({
  * ];
  */
 function FabricGridList(props) {
-  const { classes, fabricsData,  selectedFabric, handleChange } = props;
+  const { classes, fabricsData,  selectedFabric, handleChange, cols } = props;
+  //console.log(width)
+  let n_columns = (cols === 'xs' || cols === 'sm') ? 2 : 5;
+
   return ( 
     <div className={classes.root}>
-      <GridList cellHeight={180} className={classes.gridList} cols={5}>
+      <GridList cellHeight={180} className={classes.gridList} cols={n_columns}>
         
         {fabricsData.map(tile => (
           <GridListTile key={tile.id}>
             <img src={tile.src} alt={tile.name} />
             <GridListTileBar
               title={tile.name}
-              subtitle={<span>{tile.fabrics_number}</span>}
+              subtitle={<span>{tile.sku}</span>}
               actionIcon={
                 <Radio
                   checked={selectedFabric === tile.name.trim()+'-'+tile.fabrics_number}
